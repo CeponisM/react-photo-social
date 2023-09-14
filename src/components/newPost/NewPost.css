@@ -1,0 +1,18 @@
+.newPost {
+    margin: 20px auto;
+    text-align: center;
+  }
+  
+  .newPost input {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .newPost button {
+    background-color: #3897f0;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-top: 10px;
+  }

@@ -1,0 +1,72 @@
+.image-uploader {
+    border: 2px dashed #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border 0.3s;
+    position: relative;
+    width: 100%;
+    max-width: 400px; /* Adjust max-width as needed */
+    margin: 0 auto; /* Center the uploader */
+  }
+  
+  .image-uploader.drag-over {
+    border-color: #007bff; /* Highlight border on drag over */
+  }
+  
+  .upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .selected-image img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  .upload-prompt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .upload-prompt button {
+    background-color: transparent;
+    color: #007bff;
+    border: none;
+    padding: 0;
+    font-size: 16px;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+  .upload-prompt button:hover {
+    color: #0056b3;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+    .image-uploader {
+      max-width: 90%;
+    }
+  }
+  
