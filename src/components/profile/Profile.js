@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getFirestore, collection, query, where, onSnapshot } from 'firebase/firestore';
 import FollowButton from '../followButton/FollowButton';
-import { auth, db } from './firebase'; // Import auth and db
+import { auth, db } from '../../firebase'; // Import auth and db
 
 function Profile(props) {
   const [posts, setPosts] = useState([]);
@@ -21,16 +21,23 @@ function Profile(props) {
   }, [db, props.user.uid]);
 
   return (
-    <div>
-      <h2>{props.user}'s Profile</h2>
-      <FollowButton isFollowing={props.isFollowing} onFollow={props.onFollow} />
-      {posts.map((post) => (
-        <div key={post.id}>
-          <img src={post.imageUrl} alt="post" />
-          <p>{post.caption}</p>
-        </div>
-      ))}
-    </div>
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div>
+        <h2>{props.user}'s Profile</h2>
+        <FollowButton isFollowing={props.isFollowing} onFollow={props.onFollow} />
+        {posts.map((post) => (
+          <div key={post.id}>
+            <img src={post.imageUrl} alt="post" />
+            <p>{post.caption}</p>
+          </div>
+        ))}
+      </div>
+    </motion.div>
   );
 }
 

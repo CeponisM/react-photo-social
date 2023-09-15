@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import './Feed.css';
 import Post from '../post/Post';
 import NewPost from '../newPost/NewPost';
-import { collection, getDocs, addDoc, serverTimestamp } from 'firebase/firestore'; // Import Firestore functions
-import { auth, db } from '../../firebase'; // Import auth and db
+import { collection, getDocs, addDoc, serverTimestamp } from 'firebase/firestore';
+import { auth, db, storage } from '../../firebase'; // Import auth, db, and storage
+import { motion } from 'framer-motion';
 
 function Feed() {
   const [posts, setPosts] = useState([]);
@@ -11,7 +12,8 @@ function Feed() {
   useEffect(() => {
     const fetchData = async () => {
       const data = await getDocs(collection(db, 'posts'));
-      setPosts(data.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+      const fetchedPosts = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      setPosts(fetchedPosts);
     };
 
     fetchData();
@@ -35,14 +37,17 @@ function Feed() {
         const newPostId = postDocRef.id;
 
         // Update the 'posts' state with the new post data
-        setPosts(prevPosts => [{
-          id: newPostId,
-          userId: user.uid,
-          username: user.displayName,
-          caption,
-          imageUrl,
-          timestamp: new Date(),
-        }, ...prevPosts]);
+        setPosts((prevPosts) => [
+          {
+            id: newPostId,
+            userId: user.uid,
+            username: user.displayName,
+            caption,
+            imageUrl,
+            timestamp: new Date(),
+          },
+          ...prevPosts,
+        ]);
 
         console.log('New post added successfully with ID:', newPostId);
       } catch (error) {
@@ -52,12 +57,25 @@ function Feed() {
   };
 
   return (
-    <div className="feed">
-      <NewPost onNewPost={newPost} />
-      {posts.map((post) => (
-        <Post key={post.id} username={post.username} imageUrl={post.imageUrl} caption={post.caption} />
-      ))}
-    </div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="feed">
+        <NewPost onNewPost={newPost} />
+        {posts.map((post) => (
+          <Post
+            key={post.id}
+            username={post.username}
+            imageUrl={post.imageUrl}
+            caption={post.caption}
+            postId={post.id}
+          />
+        ))}
+      </div>
+    </motion.div>
   );
 }
 

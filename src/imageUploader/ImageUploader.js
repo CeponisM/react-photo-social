@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { getStorage, ref, uploadBytes } from 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 import './ImageUploader.css'; // Import your custom CSS for styling
 
@@ -37,10 +37,19 @@ function ImageUploader({ onImageUpload }) {
   const handleImageUpload = () => {
     if (selectedImage) {
       const storage = getStorage();
-      const storageRef = ref(storage, `images/${selectedImage.name}`);
-      uploadBytes(storageRef, selectedImage).then((snapshot) => {
+      const uniqueImageName = `${Date.now()}_${selectedImage.name}`;
+      const storageRef = ref(storage, `images/${uniqueImageName}`);
+      uploadBytes(storageRef, selectedImage).then(async (snapshot) => {
         console.log('Uploaded a file:', snapshot);
-        onImageUpload(snapshot.ref.fullPath);
+        
+        // Get the download URL of the uploaded image
+        const imageUrl = await getDownloadURL(storageRef);
+        
+        // Call the onImageUpload callback with the URL of the uploaded image
+        console.log(imageUrl);
+        onImageUpload(imageUrl);
+      }).catch((error) => {
+        console.error('Error uploading image:', error);
       });
     }
   };
@@ -56,6 +65,7 @@ function ImageUploader({ onImageUpload }) {
       onDragLeave={handleDragLeave}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
+      onClick={openFileInput}
     >
       <input
         type="file"

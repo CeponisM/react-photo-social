@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut as signOutAuth } from 'firebase/auth';
-import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut as signOutAuth,
+} from 'firebase/auth';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import SignIn from './components/signIn/SignIn';
 import SignUp from './components/signUp/SignUp';
 import Feed from './components/feed/Feed';
-import { doc, getDoc } from "firebase/firestore";
-import { auth, db } from './firebase'; // Import auth and db
+import Profile from './components/profile/Profile';
+import { auth as firebaseAuth, db as firestoreDb } from './firebase'; // Renamed auth and db to avoid conflict
+import SignPage from './components/signPage/SignPage';
+import BottomNav from './components/bottomNav/BottomNav';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -56,6 +65,10 @@ function App() {
     });
   };
 
+  const switchToSignUp = () => {
+    // Implement your navigation logic here
+  };
+
   return (
     <div className="App">
       {user ? (
@@ -68,12 +81,21 @@ function App() {
               {/* Display other user profile information */}
             </div>
           )}
-          <Feed />
+
+          {/* Use AnimatePresence to handle route transitions */}
+          <AnimatePresence>
+          <Router>
+            <Routes>
+              <Route path="/" element={<Feed />} />
+              <Route path="/profile" element={<Profile />} />
+            </Routes>
+            <BottomNav /> {/* Render the BottomNav component */}
+          </Router>
+          </AnimatePresence>
         </>
       ) : (
         <>
-          <SignIn onSignIn={signIn} />
-          <SignUp onSignUp={setUser} />
+          <SignPage user={user} onSignIn={signIn} onSignUp={setUser} />
         </>
       )}
     </div>

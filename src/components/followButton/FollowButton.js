@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import firebase from 'firebase/app';
-import 'firebase/firestore';
-import { auth, db } from './firebase'; // Import auth and db
+import firebase from 'firebase/compat/app'; // Changed this line
+import 'firebase/compat/firestore'; // And this line
+import { auth, db } from '../../firebase'; // Import auth and db
+
+import './FollowButton.css';
 
 function FollowButton(props) {
   const [isFollowing, setIsFollowing] = useState(false);

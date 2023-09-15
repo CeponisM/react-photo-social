@@ -1,0 +1,54 @@
+/* SignPage Container */
+.sign-page-container {
+    background-color: #fff; /* Background color for the container */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Box shadow for a subtle elevation effect */
+    text-align: center;
+    max-width: 400px; /* Adjust the maximum width as needed */
+    margin: 0 auto; /* Center the container horizontally */
+  }
+  
+  /* Heading Style */
+  .sign-page-container h1 {
+    font-size: 24px; /* Font size for the heading */
+    margin-bottom: 20px; /* Spacing below the heading */
+  }
+  
+  /* Form Container (SignIn and SignUp) */
+  .form-container {
+    margin-bottom: 20px; /* Spacing below the form */
+  }
+  
+  /* Toggle Button Style */
+  .toggle-button {
+    background-color: #007bff; /* Button background color */
+    color: #fff; /* Button text color */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+  }
+  
+  .toggle-button:hover {
+    background-color: #0056b3; /* Button background color on hover */
+  }
+  
+  /* Recover Account Button Style */
+  .recover-button {
+    color: #007bff; /* Button text color */
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline; /* Underline the text */
+    font-size: 14px; /* Font size for the recover button */
+  }
+  
+  /* Responsive Styling Example */
+  @media screen and (max-width: 600px) {
+    /* Adjust styles for screens with a maximum width of 600px */
+    .sign-page-container {
+      max-width: 90%; /* Reduce the maximum width for smaller screens */
+    }
+  }  
