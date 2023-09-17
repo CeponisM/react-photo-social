@@ -1,18 +1,86 @@
-.newPost {
-    margin: 20px auto;
-    text-align: center;
-  }
-  
-  .newPost input {
-    display: block;
-    width: 100%;
-    margin-bottom: 10px;
-  }
-  
-  .newPost button {
-    background-color: #3897f0;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    margin-top: 10px;
-  }
+/* Container for the entire NewPost component */
+.new-post-container {
+  min-width: 280px;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+/* Title for the NewPost section */
+.new-post-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Form container */
+.new-post-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Textarea for caption input */
+.new-post-textarea {
+  width: auto;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Image upload button */
+.new-post-image-upload-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+/* Image editor container */
+.image-editor-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px; /* Move the margin from the button to here */
+}
+
+/* Done editing button */
+.image-editor-container button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.image-uploader {
+  width: auto;
+  margin-top: 21px;
+  margin-bottom: 21px;
+}
+
+/* TUI Image Editor */
+.tui-image-editor {
+  width: 100%; /* Adjust as needed */
+  height: 600px; /* Adjust the height according to your preference */
+}
+
+.tui-image-editor-container {
+  min-width: 500px;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  min-height: 300px; /* Adjust as needed */
+  height: 100%; /* Adjust as needed */
+  position: relative;
+}
+
+.tui-image-editor-header {
+  display: none;
+}

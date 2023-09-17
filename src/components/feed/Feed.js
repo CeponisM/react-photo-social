@@ -11,7 +11,7 @@ function Feed() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getDocs(collection(db, 'posts'));
+      const data = await getDocs(collection(db, 'Posts'));
       const fetchedPosts = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
       setPosts(fetchedPosts);
     };
@@ -25,7 +25,7 @@ function Feed() {
     if (user) {
       try {
         // Add the new post to Firestore 'posts' collection
-        const postDocRef = await addDoc(collection(db, 'posts'), {
+        const postDocRef = await addDoc(collection(db, 'Posts'), {
           userId: user.uid,
           username: user.displayName,
           caption,

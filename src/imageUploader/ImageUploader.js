@@ -11,6 +11,7 @@ function ImageUploader({ onImageUpload }) {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setSelectedImage(file);
+    onImageUpload(file);
   };
 
   const handleDragEnter = (e) => {
@@ -47,7 +48,7 @@ function ImageUploader({ onImageUpload }) {
         
         // Call the onImageUpload callback with the URL of the uploaded image
         console.log(imageUrl);
-        onImageUpload(imageUrl);
+        onImageUpload(selectedImage);
       }).catch((error) => {
         console.error('Error uploading image:', error);
       });
@@ -59,14 +60,7 @@ function ImageUploader({ onImageUpload }) {
   };
 
   return (
-    <div
-      className={`image-uploader ${isDragging ? 'drag-over' : ''}`}
-      onDragEnter={handleDragEnter}
-      onDragLeave={handleDragLeave}
-      onDragOver={handleDragOver}
-      onDrop={handleDrop}
-      onClick={openFileInput}
-    >
+    <>
       <input
         type="file"
         accept="image/*"
@@ -77,17 +71,25 @@ function ImageUploader({ onImageUpload }) {
       <div className="upload-container">
         {selectedImage ? (
           <div className="selected-image">
-            <img src={URL.createObjectURL(selectedImage)} alt="Selected" />
-            <button onClick={handleImageUpload}>Upload</button>
+            <button onClick={() => openFileInput}>Click to browse</button>
           </div>
         ) : (
+          <div
+          className={`image-uploader ${isDragging ? 'drag-over' : ''}`}
+          onDragEnter={handleDragEnter}
+          onDragLeave={handleDragLeave}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+          onClick={openFileInput}
+        >
           <div className="upload-prompt">
             <span>Drag and drop an image or</span>
             <button onClick={openFileInput}>Click to browse</button>
           </div>
+          </div>
         )}
       </div>
-    </div>
+    </>
   );
 }
 
