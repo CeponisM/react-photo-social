@@ -11,7 +11,7 @@ import { auth, db } from '../../firebase'; // Import auth and db
 import { motion } from 'framer-motion';
 import ConfirmationModal from '../confirmationModal/ConfirmationModal'; // Import the ConfirmationModal component
 
-function Post({ username, imageUrl, caption, postId }) {
+function Post({ userId, username, imageUrl, caption, postId, setPosts, posts }) {
   const [likes, setLikes] = useState(0);
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState([]);
@@ -69,37 +69,74 @@ function Post({ username, imageUrl, caption, postId }) {
   };
 
   const handleDelete = () => {
-    // Check if the currently signed-in user is the owner of the post
-    if (auth.currentUser && auth.currentUser.uid === username) {
-      // Show the confirmation modal
-      setShowConfirmationModal(true);
+    console.log('handle delete')
+    // Check if a user is signed in
+    if (auth.currentUser) {
+      console.log('User is signed in with ID:', auth.currentUser.uid);
+      // Check if the signed-in user is the owner of the post
+      if (auth.currentUser.uid === userId) {
+        console.log('Deleting post with ID:', postId);
+        // Show the confirmation modal
+        setShowConfirmationModal(true);
+        console.log(showConfirmationModal)
+      } else {
+        console.log('The signed-in user is not the owner of this post.');
+      }
+    } else {
+      console.log('No user is signed in.');
     }
-  };
+  };  
 
   const handleConfirmDelete = async () => {
-    // Delete the post from Firestore
-    const postDocRef = doc(db, 'posts', postId);
-    await deleteDoc(postDocRef);
-
-    // Hide the confirmation modal after deletion
-    setShowConfirmationModal(false);
-
-    // You can add additional logic for handling UI feedback or redirection after deletion
-    console.log('Post deleted successfully');
-  };
-
-  const handleCancelDelete = () => {
-    // Hide the confirmation modal if canceled
-    setShowConfirmationModal(false);
-  };
+    try {
+      console.log('Confirmed deletion for post with ID:', postId);
+      
+      // Reference to the post in Firestore
+      const postDocRef = doc(db, 'posts', postId);
+    
+      // Delete 'likes' subcollection
+      const likesSnapshot = await getDocs(collection(postDocRef, 'likes'));
+      likesSnapshot.docs.forEach(async (doc) => {
+        console.log('Deleting like with ID:', doc.id);
+        await deleteDoc(doc.ref);  // Delete each 'like'
+      });
+    
+      // Delete 'comments' subcollection
+      const commentsSnapshot = await getDocs(collection(postDocRef, 'comments'));
+      commentsSnapshot.docs.forEach(async (doc) => {
+        console.log('Deleting comment with ID:', doc.id);
+        await deleteDoc(doc.ref);  // Delete each 'comment'
+      });
+    
+      // Delete the post document
+      console.log('Deleting post with ID:', postId);
+      await deleteDoc(postDocRef);
+      console.log('Post deleted successfully');
+  
+      // Update the local state to remove the deleted post
+      setPosts(posts.filter(post => post.id !== postId));
+    
+      // Hide the confirmation modal after deletion
+      setShowConfirmationModal(false);
+    
+    } catch (error) {
+      console.error('Error deleting post:', error);  // Log any errors
+    }
+  };  
 
   const handleMouseEnter = () => {
     setShowDeleteButton(true);
   };
-
+  
   const handleMouseLeave = () => {
     setShowDeleteButton(false);
   };
+  
+  const handleCancelDelete = () => {
+    // Hide the confirmation modal if canceled
+    setShowConfirmationModal(false);
+  };
+  
 
   return (
     <motion.div
@@ -118,7 +155,7 @@ function Post({ username, imageUrl, caption, postId }) {
         />
       )}
       {showDeleteButton && (
-        <button className="post__delete" onClick={handleDelete}>
+        <button className="post__delete" onClick={() => handleDelete()}>
           🗑️ Delete
         </button>
       )}

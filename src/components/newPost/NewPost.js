@@ -3,6 +3,7 @@ import ImageUploader from '../../imageUploader/ImageUploader'; // Adjust the pat
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import 'tui-image-editor/dist/tui-image-editor.css';
 import ImageEditor from '@toast-ui/react-image-editor';
+import { auth } from '../../firebase'; // Import auth, db, and storage
 import './NewPost.css'; // Import the CSS file
 
 function NewPost({ onNewPost }) {
@@ -63,7 +64,7 @@ function NewPost({ onNewPost }) {
         const downloadUrl = await getDownloadURL(storageRef);
 
         // Call onNewPost with caption and imagePath
-        onNewPost(caption, downloadUrl);
+        onNewPost(caption, downloadUrl, auth.currentUser.uid);
         setCaption('');
         setImageUrl(null);
         setImageFile(null);

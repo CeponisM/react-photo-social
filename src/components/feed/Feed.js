@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Feed.css';
 import Post from '../post/Post';
 import NewPost from '../newPost/NewPost';
-import { collection, getDocs, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, getDocs, addDoc, serverTimestamp, query, orderBy } from 'firebase/firestore';
 import { auth, db, storage } from '../../firebase'; // Import auth, db, and storage
 import { motion } from 'framer-motion';
 
@@ -11,22 +11,23 @@ function Feed() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getDocs(collection(db, 'Posts'));
+      const data = await getDocs(query(collection(db, 'Posts'), orderBy('timestamp', 'desc')));
       const fetchedPosts = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      console.log('Fetched posts:', fetchedPosts); // Add this line
       setPosts(fetchedPosts);
     };
 
     fetchData();
   }, []);
 
-  const newPost = async (caption, imageUrl) => {
+  const newPost = async (caption, imageUrl, userId) => {
     const user = auth.currentUser;
 
     if (user) {
       try {
         // Add the new post to Firestore 'posts' collection
         const postDocRef = await addDoc(collection(db, 'Posts'), {
-          userId: user.uid,
+          userId: userId,
           username: user.displayName,
           caption,
           imageUrl,
@@ -38,6 +39,7 @@ function Feed() {
 
         // Update the 'posts' state with the new post data
         setPosts((prevPosts) => [
+          ...prevPosts,
           {
             id: newPostId,
             userId: user.uid,
@@ -46,7 +48,6 @@ function Feed() {
             imageUrl,
             timestamp: new Date(),
           },
-          ...prevPosts,
         ]);
 
         console.log('New post added successfully with ID:', newPostId);
@@ -68,7 +69,10 @@ function Feed() {
         {posts.map((post) => (
           <Post
             key={post.id}
+            setPosts={setPosts}
+            posts={posts}
             username={post.username}
+            userId={post.userId}
             imageUrl={post.imageUrl}
             caption={post.caption}
             postId={post.id}

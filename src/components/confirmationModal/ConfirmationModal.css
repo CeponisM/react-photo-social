@@ -1,6 +1,8 @@
 .confirmation-modal {
     background-color: #fff;
     border: 1px solid #ccc;
+    height: 280px;
+    width: 55%;
     border-radius: 5px;
     padding: 20px;
     text-align: center;
