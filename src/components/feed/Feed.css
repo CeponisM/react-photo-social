@@ -3,6 +3,7 @@
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
+  background-color: rgb(151, 141, 141);
 }
 
 /* Style for individual posts */

@@ -44,10 +44,19 @@ function SignIn(props) {
   return (
     <div>
       <h2>Sign In</h2>
+      < p/>
+        FOR TESTING USE:
+        <p />
+        user: "test@test.com"
+        <p />
+        pass: "testing"
+        < p/>
       <form onSubmit={handleSubmit}>
         <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        < p/>
         <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button type="submit">Sign In</button>
+        < p/>
+        <button type="submit">Sign In</button> &nbsp;
         <button onClick={handleGoogleSignIn}>Sign In with Google</button>
       </form>
     </div>

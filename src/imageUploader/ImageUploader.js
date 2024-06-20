@@ -84,7 +84,7 @@ function ImageUploader({ onImageUpload }) {
         >
           <div className="upload-prompt">
             <span>Drag and drop an image or</span>
-            <button onClick={openFileInput}>Click to browse</button>
+            Click to browse
           </div>
           </div>
         )}

@@ -39,7 +39,6 @@ function Feed() {
 
         // Update the 'posts' state with the new post data
         setPosts((prevPosts) => [
-          ...prevPosts,
           {
             id: newPostId,
             userId: user.uid,
@@ -48,6 +47,7 @@ function Feed() {
             imageUrl,
             timestamp: new Date(),
           },
+          ...prevPosts
         ]);
 
         console.log('New post added successfully with ID:', newPostId);

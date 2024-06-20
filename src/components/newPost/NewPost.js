@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import ImageUploader from '../../imageUploader/ImageUploader'; // Adjust the path as needed
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import firebase from 'firebase/app';
 import 'tui-image-editor/dist/tui-image-editor.css';
 import ImageEditor from '@toast-ui/react-image-editor';
 import { auth } from '../../firebase'; // Import auth, db, and storage
@@ -51,7 +52,7 @@ function NewPost({ onNewPost }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (imageFile) {
       setUploading(true);
       try {
@@ -60,9 +61,17 @@ function NewPost({ onNewPost }) {
           .toString(36)
           .substring(7)}`;
         const storageRef = ref(storage, `images/${uniqueImageName}`);
-        await uploadBytes(storageRef, imageFile);
+        
+        // Include owner metadata when uploading
+        const metadata = {
+          customMetadata: {
+            owner: auth.currentUser.uid
+          }
+        };
+  
+        await uploadBytes(storageRef, imageFile, metadata);  // Include metadata here
         const downloadUrl = await getDownloadURL(storageRef);
-
+  
         // Call onNewPost with caption and imagePath
         onNewPost(caption, downloadUrl, auth.currentUser.uid);
         setCaption('');
@@ -79,7 +88,7 @@ function NewPost({ onNewPost }) {
       // Handle the case where no image is selected
       console.error('No image selected for upload.');
     }
-  };
+  };  
 
   return (
     <div className={`new-post-container ${editing ? 'editing' : ''}`}>

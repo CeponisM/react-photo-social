@@ -12,7 +12,7 @@ import SignIn from './components/signIn/SignIn';
 import SignUp from './components/signUp/SignUp';
 import Feed from './components/feed/Feed';
 import Profile from './components/profile/Profile';
-import { auth as firebaseAuth, db as firestoreDb } from './firebase'; // Renamed auth and db to avoid conflict
+import { auth as firebaseAuth, db as firestoreDb } from './firebase';
 import SignPage from './components/signPage/SignPage';
 import BottomNav from './components/bottomNav/BottomNav';
 
@@ -84,7 +84,7 @@ function App() {
 
           {/* Use AnimatePresence to handle route transitions */}
           <AnimatePresence>
-          <Router>
+          <Router basename='/1'>
             <Routes>
               <Route path="/" element={<Feed />} />
               <Route path="/profile" element={<Profile />} />

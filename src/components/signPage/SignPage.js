@@ -20,7 +20,7 @@ function SignPage({ onSignIn, onSignUp, user }) {
       className="sign-page-container" // Apply CSS class for styling
     >
       <div>
-        <h1>Welcome to Sign Page</h1>
+        <h1>Welcome to Instagram Clone App</h1>
         <div className="form-container">
           {showSignIn ? (
             // Render the SignIn component
@@ -31,7 +31,7 @@ function SignPage({ onSignIn, onSignUp, user }) {
           )}
         </div>
         <button onClick={handleToggleForm} className="toggle-button">
-          {showSignIn ? 'Switch to Sign Up' : 'Switch to Sign In'}
+          {showSignIn ? 'Sign Up' : 'Sign In'}
         </button>
 
         {showSignIn && (

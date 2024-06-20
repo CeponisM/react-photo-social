@@ -85,58 +85,58 @@ function Post({ userId, username, imageUrl, caption, postId, setPosts, posts }) 
     } else {
       console.log('No user is signed in.');
     }
-  };  
+  };
 
   const handleConfirmDelete = async () => {
     try {
       console.log('Confirmed deletion for post with ID:', postId);
-      
+
       // Reference to the post in Firestore
       const postDocRef = doc(db, 'posts', postId);
-    
+
       // Delete 'likes' subcollection
       const likesSnapshot = await getDocs(collection(postDocRef, 'likes'));
       likesSnapshot.docs.forEach(async (doc) => {
         console.log('Deleting like with ID:', doc.id);
         await deleteDoc(doc.ref);  // Delete each 'like'
       });
-    
+
       // Delete 'comments' subcollection
       const commentsSnapshot = await getDocs(collection(postDocRef, 'comments'));
       commentsSnapshot.docs.forEach(async (doc) => {
         console.log('Deleting comment with ID:', doc.id);
         await deleteDoc(doc.ref);  // Delete each 'comment'
       });
-    
+
       // Delete the post document
       console.log('Deleting post with ID:', postId);
       await deleteDoc(postDocRef);
       console.log('Post deleted successfully');
-  
+
       // Update the local state to remove the deleted post
       setPosts(posts.filter(post => post.id !== postId));
-    
+
       // Hide the confirmation modal after deletion
       setShowConfirmationModal(false);
-    
+
     } catch (error) {
       console.error('Error deleting post:', error);  // Log any errors
     }
-  };  
+  };
 
   const handleMouseEnter = () => {
     setShowDeleteButton(true);
   };
-  
+
   const handleMouseLeave = () => {
     setShowDeleteButton(false);
   };
-  
+
   const handleCancelDelete = () => {
     // Hide the confirmation modal if canceled
     setShowConfirmationModal(false);
   };
-  
+
 
   return (
     <motion.div
