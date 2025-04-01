@@ -1,70 +1,213 @@
-# Getting Started with Create React App
+# Instagram Clone
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A modern Instagram-inspired social media application built with React and Firebase, featuring real-time posting, image editing, and social interactions.
+
+## Features
+
+- **User Authentication**: Secure sign-up and sign-in with Firebase Auth
+- **Create Posts**: Upload images with captions and share with followers
+- **Image Editing**: Built-in image editor with crop, filter, and drawing tools
+- **Social Interactions**: Like and comment on posts
+- **Real-time Updates**: Live feed updates using Firestore
+- **Profile Management**: User profiles with display names and photos
+- **Follow System**: Follow and unfollow other users
+- **Responsive Design**: Mobile-friendly interface with bottom navigation
+- **Post Management**: Delete your own posts with confirmation modals
+
+## Tech Stack
+
+- **Frontend**: React 18, Framer Motion for animations
+- **Backend**: Firebase (Firestore, Authentication, Storage)
+- **Image Processing**: TOAST UI Image Editor
+- **Routing**: React Router DOM
+- **Styling**: CSS with responsive design
+- **File Upload**: React Dropzone with drag-and-drop support
+
+## Prerequisites
+
+Before running this application, make sure you have:
+
+- Node.js (v14 or higher)
+- npm or yarn package manager
+- Firebase project with Firestore, Authentication, and Storage enabled
+
+## Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <your-repository-url>
+   cd instagram-clone
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Firebase Setup**
+   - Create a Firebase project at [Firebase Console](https://console.firebase.google.com)
+   - Enable Authentication (Email/Password provider)
+   - Create a Firestore database
+   - Enable Firebase Storage
+   - Copy your Firebase configuration
+
+4. **Environment Configuration**
+   
+   Create a `src/firebase.js` file with your Firebase configuration:
+   ```javascript
+   import { initializeApp } from 'firebase/app';
+   import { getAuth } from 'firebase/auth';
+   import { getFirestore } from 'firebase/firestore';
+   import { getStorage } from 'firebase/storage';
+
+   const firebaseConfig = {
+     apiKey: "your-api-key",
+     authDomain: "your-auth-domain",
+     projectId: "your-project-id",
+     storageBucket: "your-storage-bucket",
+     messagingSenderId: "your-messaging-sender-id",
+     appId: "your-app-id"
+   };
+
+   const app = initializeApp(firebaseConfig);
+   export const auth = getAuth(app);
+   export const db = getFirestore(app);
+   export const storage = getStorage(app);
+   ```
+
+5. **Start the development server**
+   ```bash
+   npm start
+   ```
+
+   The application will open at `http://localhost:3000`
+
+## Firestore Database Structure
+
+```
+users/
+  {userId}/
+    - displayName
+    - photoURL
+    - email
+
+Posts/
+  {postId}/
+    - userId
+    - username
+    - caption
+    - imageUrl
+    - timestamp
+    
+    comments/
+      {commentId}/
+        - userId
+        - text
+        - timestamp
+    
+    likes/
+      {likeId}/
+        - userId
+
+follows/
+  {userId}/
+    userFollows/
+      {followedUserId}/
+        - (empty document indicating follow relationship)
+```
 
 ## Available Scripts
 
-In the project directory, you can run:
+- `npm start` - Runs the app in development mode
+- `npm test` - Launches the test runner
+- `npm run build` - Builds the app for production
+- `npm run eject` - Ejects from Create React App (irreversible)
 
-### `npm start`
+## Key Features Explained
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Image Upload & Editing
+- Drag-and-drop or click to browse for images
+- Built-in image editor with tools for:
+  - Cropping and rotating
+  - Filters and effects
+  - Drawing and text overlay
+  - Shape and icon insertion
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Authentication Flow
+- New users can sign up with email/password
+- Existing users sign in with credentials
+- User profile data is stored in Firestore
+- Protected routes require authentication
 
-### `npm test`
+### Real-time Social Features
+- Posts appear in feed immediately after creation
+- Like counts update in real-time
+- Comments are displayed chronologically
+- Follow relationships tracked in Firestore
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Security Features
+- Firebase Storage rules ensure users can only delete their own images
+- Firestore security rules protect user data
+- Image metadata includes owner information
+- Post deletion restricted to post owners
 
-### `npm run build`
+## Deployment
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Firebase Hosting (Recommended)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. **Install Firebase CLI**
+   ```bash
+   npm install -g firebase-tools
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. **Build the project**
+   ```bash
+   npm run build
+   ```
 
-### `npm run eject`
+3. **Initialize Firebase Hosting**
+   ```bash
+   firebase init hosting
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+4. **Deploy**
+   ```bash
+   firebase deploy
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Other Platforms
+The built application can be deployed to any static hosting service like Netlify, Vercel, or AWS S3.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Troubleshooting
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Common Issues
 
-## Learn More
+**Firebase Configuration Errors**
+- Ensure all Firebase services (Auth, Firestore, Storage) are enabled
+- Check that API keys and project IDs are correct
+- Verify Firebase rules allow read/write operations
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**Image Upload Issues**
+- Check Firebase Storage rules
+- Ensure storage bucket exists and is accessible
+- Verify file size limits
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Authentication Problems**
+- Enable Email/Password provider in Firebase Console
+- Check that auth domain is configured correctly
 
-### Code Splitting
+## Performance Considerations
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Images are stored in Firebase Storage with unique naming
+- Firestore queries are optimized with indexing
+- Components use React.memo() where appropriate
+- Large images are handled efficiently with blob conversion
 
-### Analyzing the Bundle Size
+## Browser Support
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- Chrome (recommended)
+- Firefox
+- Safari
+- Edge
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Note: Image editing features work best in modern browsers with full Canvas API support.
