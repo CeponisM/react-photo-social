@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getFirestore, collection, query, where, onSnapshot } from 'firebase/firestore';
 import FollowButton from '../followButton/FollowButton';
+import { motion } from 'framer-motion';
 import { auth, db } from '../../firebase'; // Import auth and db
 
 function Profile(props) {
